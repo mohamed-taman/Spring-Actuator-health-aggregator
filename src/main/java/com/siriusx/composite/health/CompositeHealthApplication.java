@@ -3,6 +3,7 @@ package com.siriusx.composite.health;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.health.CompositeReactiveHealthContributor;
 import org.springframework.boot.actuate.health.CompositeReactiveHealthIndicator;
@@ -17,23 +18,23 @@ import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 public class CompositeHealthApplication {
-
+    
     @Autowired
-    HealthAggregator healthAggregator;
+    private HealthAggregator healthAggregator;
 
     public static void main(String[] args) {
         SpringApplication.run(CompositeHealthApplication.class, args);
     }
 
-    public Mono<Health> getProductHealth() {
+    private Mono<Health> getProductHealth() {
         return getHealth("1");
     }
 
-    public Mono<Health> getRecommendationHealth() {
+    private Mono<Health> getRecommendationHealth() {
         return getHealth(" ");
     }
 
-    public Mono<Health> getReviewHealth() {
+    private Mono<Health> getReviewHealth() {
         return getHealth("123");
     }
 
@@ -50,7 +51,7 @@ public class CompositeHealthApplication {
     
     @Bean(name = "Old API- Core Services")
     ReactiveHealthIndicator oldCoreServices() {
-
+        
         var registry = new DefaultReactiveHealthIndicatorRegistry(new LinkedHashMap<>());
 
         registry.register("Product Service", this::getProductHealth);
